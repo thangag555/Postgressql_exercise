@@ -1,0 +1,36 @@
+select * from student;
+
+alter table student add mark int;
+
+truncate table student;
+
+insert into student values(1,'ram',1234567890,92);
+insert into student values(2,'raju',0987654321,80);
+insert into student values(3,'aakash',9876543210,76);
+insert into student values(4,'suresh',5432167890,65);
+insert into student values(5,'ramesh',7890654321,57);
+
+create or replace function std_grade(sid int)
+returns varchar(10)
+as
+$$
+declare
+grade varchar(10);
+begin
+select case
+when mark between 91 and 100 then 'O'
+when mark between 81 and 90 then 'A+'
+when mark between 71 and 80 then 'A'
+when mark between 61 and 70 then 'B+'
+when mark between 51 and 60 then 'B'
+else
+'U'
+end into grade from student where stud_id=sid;
+return grade;
+end;
+$$
+language plpgsql;
+
+select  std_grade(2);
+
+

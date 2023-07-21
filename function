@@ -1,0 +1,21 @@
+create table student(stud_id int,stud_name varchar(25),stud_mobno bigint);
+select * from student;
+
+insert into student values(1,'ram',1234567890);
+insert into student values(2,'raju',0987654321);
+
+create or replace function mob(sid int)
+returns bigint
+as
+$$
+declare 
+mob_no bigint;
+begin
+select stud_mobno from student into mob_no where stud_id=sid;
+return mob_no;
+end;
+$$
+language plpgsql
+
+
+select mob(1);

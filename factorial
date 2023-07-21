@@ -1,0 +1,19 @@
+create or replace function fac(num int)
+returns int
+as
+$$
+declare
+ans int;
+res int=1;
+begin
+for ans in 1..num loop
+res=res*ans;
+end loop;
+raise notice 'the factorial of % is =%',num,res;
+return res;
+end;
+$$
+language plpgsql;
+
+
+select fac(5);

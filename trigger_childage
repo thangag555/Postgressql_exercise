@@ -1,0 +1,33 @@
+create table children(childname varchar(20),childage int,childaddress varchar(20),mobno bigint);
+insert into children values('david',10,'north street,delhi',1234567890);
+insert into children values('ram',11,'south street,mumbai',91234567890);
+insert into children values('raju',12,'weststreet,hyderabad',2345678901);
+
+select * from children;
+
+create or replace trigger child
+before
+insert
+on children
+for each row
+execute function c_age(); 
+
+
+
+
+
+create or replace function c_age()
+returns trigger
+as
+$$
+begin
+if new.childage<11 then raise notice 'age should be greater than 11';
+else return new;
+end if;
+end;
+$$
+language plpgsql;
+
+insert into children values('rajesh',15,'north street,delhi',1234509876);
+insert into children values('rahul',10,'south street,nagpur',2134509876);
+

@@ -1,0 +1,75 @@
+create table customer(
+custid int primary key,
+custname varchar(20),
+addr varchar(30),
+phno bigint,
+panno varchar(20)
+);
+
+create table loan(
+loanid int primary key,
+amount int,
+interest varchar(10),
+custid int,
+constraint fkey foreign key(custid) references customer(custid)
+                 
+);
+
+create table account(
+acctno bigint primary key,
+accbal bigint,
+custid int,
+constraint fkey foreign key(custid) references customer(custid)
+);
+
+
+insert into customer values(11,'david','north street,delhi',1234567890,'ABC123');
+insert into customer values(12,'ganesh','south street,banglore',0123456789,'abc321');
+insert into customer values(13,'ram','west street,mumbai',9876543210,'abc123');
+insert into customer values(14,'ravi','east street,hyderabad',8765432190,'xyz123');
+
+select * from customer;
+
+insert into loan values(101,100000,'3.0%',11);
+insert into loan values(102,200000,'2.0%',12);
+insert into loan values(103,300000,'1.5%',13);
+insert into loan values(104,400000,'1.0%',14);
+
+select * from loan;
+
+insert into account values(1002003004005,10000,11);
+insert into account values(1020304050607,20000,12);
+insert into account values(1003005007009,30000,13);
+insert into account values(1234567890123,40000,14);
+
+select * from account;
+
+create or replace trigger minbal
+before
+insert
+on account
+for each row
+execute function minbal();
+
+
+create or replace function minbal()
+returns trigger
+as
+$$
+begin
+if new.accbal<25000 then raise notice 'the amount should be greater than 25000';
+else return new;
+end if;
+end;
+$$
+language plpgsql;
+
+insert into account values(12345678901234,50000,14);
+
+create table children(childname varchar(20),childage int,childaddress varchar(20),mobno bigint);
+insert into children values('david',10,'north street,delhi',1234567890);
+insert into children values('ram',11,'south street,mumbai',91234567890);
+insert into children values('raju',12,'west street,hyderabad',2345678901);
+
+create or replace trigger
+
